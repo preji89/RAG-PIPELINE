@@ -21,6 +21,16 @@ class ClaudeRAGPipeline:
     def __init__(self):
         self._ensure_table()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
+        """Close the database connection."""
+        conn.close()
+
     def _ensure_table(self):
         with conn.cursor() as cur:
             cur.execute("CREATE EXTENSION IF NOT EXISTS vector")
